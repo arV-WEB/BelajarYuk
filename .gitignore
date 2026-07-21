@@ -44,4 +44,4 @@ uploads/*
 
 !uploads/.gitkeep
 
-ai/
+.ai/
