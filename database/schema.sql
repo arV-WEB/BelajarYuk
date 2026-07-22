@@ -1,3 +1,4 @@
+-- QUERY TRUNCATED
 -- ============================================================
 -- BelajarYuk Database Schema
 -- PostgreSQL / Supabase
@@ -342,6 +343,7 @@ CREATE TABLE password_resets (
     token_hash VARCHAR(255) NOT NULL UNIQUE,
 
     expires_at TIMESTAMP NOT NULL,
+
     used_at TIMESTAMP,
 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -356,44 +358,95 @@ CREATE TABLE password_resets (
 -- INDEXES
 -- ============================================================
 
-CREATE INDEX idx_subjects_user_id
-    ON subjects(user_id);
+CREATE INDEX idx_users_username
+ON users(username);
 
-CREATE INDEX idx_study_notes_user_id
-    ON study_notes(user_id);
+CREATE INDEX idx_users_email
+ON users(email);
 
-CREATE INDEX idx_study_notes_subject_id
-    ON study_notes(subject_id);
+CREATE INDEX idx_subjects_user
+ON subjects(user_id);
 
-CREATE INDEX idx_study_notes_study_date
-    ON study_notes(study_date);
+CREATE INDEX idx_study_notes_user
+ON study_notes(user_id);
 
-CREATE INDEX idx_academic_goals_user_id
-    ON academic_goals(user_id);
+CREATE INDEX idx_study_notes_subject
+ON study_notes(subject_id);
 
-CREATE INDEX idx_academic_goals_subject_id
-    ON academic_goals(subject_id);
+CREATE INDEX idx_study_notes_status
+ON study_notes(status);
 
-CREATE INDEX idx_academic_goals_target_date
-    ON academic_goals(target_date);
+CREATE INDEX idx_study_notes_date
+ON study_notes(study_date);
 
-CREATE INDEX idx_calendar_events_user_id
-    ON calendar_events(user_id);
+CREATE INDEX idx_academic_goals_user
+ON academic_goals(user_id);
 
-CREATE INDEX idx_calendar_events_start_datetime
-    ON calendar_events(start_datetime);
+CREATE INDEX idx_academic_goals_subject
+ON academic_goals(subject_id);
 
-CREATE INDEX idx_calendar_events_end_datetime
-    ON calendar_events(end_datetime);
+CREATE INDEX idx_academic_goals_status
+ON academic_goals(status);
 
-CREATE INDEX idx_user_achievements_user_id
-    ON user_achievements(user_id);
+CREATE INDEX idx_calendar_events_user
+ON calendar_events(user_id);
 
-CREATE INDEX idx_user_achievements_achievement_id
-    ON user_achievements(achievement_id);
+CREATE INDEX idx_calendar_events_start
+ON calendar_events(start_datetime);
 
-CREATE INDEX idx_password_resets_user_id
-    ON password_resets(user_id);
+CREATE INDEX idx_user_achievements_user
+ON user_achievements(user_id);
 
-CREATE INDEX idx_password_resets_token_hash
-    ON password_resets(token_hash);
+CREATE INDEX idx_password_resets_user
+ON password_resets(user_id);
+
+CREATE INDEX idx_password_resets_token
+ON password_resets(token_hash);
+
+CREATE INDEX idx_password_resets_expires
+ON password_resets(expires_at);
+
+-- ============================================================
+-- DEFAULT ACHIEVEMENTS
+-- ============================================================
+
+INSERT INTO achievements (
+    title,
+    description,
+    achievement_type,
+    required_value,
+    badge_icon
+)
+VALUES
+(
+    'Langkah Pertama',
+    'Login pertama kali.',
+    'Login',
+    1,
+    'bi-door-open'
+),
+(
+    'Rajin Belajar',
+    'Menyelesaikan 10 sesi belajar.',
+    'Study',
+    10,
+    'bi-book'
+),
+(
+    'Pemburu Target',
+    'Menyelesaikan 5 target akademik.',
+    'Goal',
+    5,
+    'bi-bullseye'
+),
+(
+    'Tepat Waktu',
+    'Menyelesaikan 10 jadwal belajar.',
+    'Calendar',
+    10,
+    'bi-calendar-check'
+);
+
+-- ============================================================
+-- END OF SCHEMA
+-- ============================================================
