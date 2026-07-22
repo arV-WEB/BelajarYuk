@@ -1,1 +1,20 @@
-/* Main custom stylesheet for BelajarYuk */
+/* Global project styles */
+
+:root {
+    color-scheme: light;
+}
+
+a {
+    text-underline-offset: .18em;
+}
+
+.text-truncate-2 {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.letter-spacing-sm {
+    letter-spacing: .16em;
+}
