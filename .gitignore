@@ -2,46 +2,57 @@
 # Python
 # ==========================
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
+*.py[cod]
 .Python
 
+# ==========================
 # Virtual Environment
-env/
-venv/
-ENV/
+# ==========================
 .venv/
 
+# ==========================
 # Environment Variables
+# ==========================
 .env
+.env.example
 
+# ==========================
 # Flask
+# ==========================
 instance/
 
+# ==========================
 # Testing
+# ==========================
+tests/
 .pytest_cache/
 .coverage
 htmlcov/
 
+# ==========================
 # Build
+# ==========================
 build/
 dist/
 *.egg-info/
 
-# IDE
-.vscode/
-.idea/
-
-# macOS
-.DS_Store
-
+# ==========================
 # Logs
-logs/*.log
+# ==========================
+logs/
 
-# Uploads (optional)
-uploads/*
+# ==========================
+# Uploads
+# ==========================
+uploads/
 
-!uploads/.gitkeep
+# ==========================
+# Documentation
+# ==========================
+docs/
 
+# ==========================
+# AI Knowledge Base
+# ==========================
 .ai/
+
