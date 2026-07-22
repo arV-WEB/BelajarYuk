@@ -24,6 +24,7 @@ instance/
 # ==========================
 # Testing
 # ==========================
+tests/
 .pytest_cache/
 .coverage
 htmlcov/
@@ -54,3 +55,4 @@ docs/
 # AI Knowledge Base
 # ==========================
 .ai/
+
