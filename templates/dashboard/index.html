@@ -1,1 +1,60 @@
-<!-- Dashboard Index Page -->
+{% extends "layout/base.html" %}
+
+{% block title %}Dashboard | BelajarYuk{% endblock %}
+{% block body_class %}auth-page{% endblock %}
+
+{% block content %}
+<div class="dashboard-shell d-flex align-items-center justify-content-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-8 col-xl-6">
+                <div class="card dashboard-card">
+                    <div class="card-body p-4 p-md-5">
+                        <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
+                            <a href="{{ url_for('dashboard') }}" class="brand-mark text-decoration-none">
+                                <span class="brand-mark__logo">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                        <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v13A2.5 2.5 0 0 1 17.5 21H6.5A2.5 2.5 0 0 1 4 18.5v-13Z" stroke="currentColor" stroke-width="1.8"/>
+                                        <path d="M12 6.2v11.6M8.5 6.8v9.2M15.5 6.8v9.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                                    </svg>
+                                </span>
+                                BelajarYuk
+                            </a>
+                            <a href="{{ url_for('logout') }}" class="btn btn-outline-primary btn-sm">
+                                Logout
+                            </a>
+                        </div>
+
+                        <div class="mb-4">
+                            <p class="auth-subtle-badge mb-3">Logged in</p>
+                            <h1 class="auth-panel__heading mb-2">Welcome, {{ display_name }}.</h1>
+                            <p class="auth-panel__subheading mb-0">Your authentication flow is active and protected. The main dashboard content can be built on top of this session scaffold.</p>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="p-3 rounded-4 bg-light border h-100">
+                                    <p class="hero-stats__label mb-2">Session</p>
+                                    <p class="hero-stats__value mb-0">Active</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="p-3 rounded-4 bg-light border h-100">
+                                    <p class="hero-stats__label mb-2">Remember Me</p>
+                                    <p class="hero-stats__value mb-0">{{ 'On' if session.get('remember_me') else 'Off' }}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="p-3 rounded-4 bg-light border h-100">
+                                    <p class="hero-stats__label mb-2">Account</p>
+                                    <p class="hero-stats__value mb-0">Ready</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
