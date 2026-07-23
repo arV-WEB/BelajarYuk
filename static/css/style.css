@@ -1,20 +1,19 @@
-/* Global project styles */
-
-:root {
-    color-scheme: light;
+/* Main custom stylesheet for BelajarYuk */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Segoe UI, sans-serif;
 }
 
-a {
-    text-underline-offset: .18em;
+body{
+    background:#f6f8fb;
 }
 
-.text-truncate-2 {
-    display: -webkit-box;
-    overflow: hidden;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+.dashboard{
+    display:flex;
+    min-height:100vh;
 }
 
-.letter-spacing-sm {
-    letter-spacing: .16em;
-}
+/* ===========================
+SIDEBAR
