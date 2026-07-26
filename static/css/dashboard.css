@@ -58,7 +58,7 @@ body {
     padding: 24px 16px;
     position: sticky;
     top: 0;
-    height: 100vh;
+    height:auto;
     flex-shrink: 0;
 }
 
@@ -138,6 +138,7 @@ body {
 }
 
 .sidebar-bottom {
+
     padding-top: 16px;
     border-top: 1px solid var(--color-border);
 }
@@ -1496,6 +1497,1149 @@ input:focus{
 }
 
 
+/*=========================
+SEARCH ACTIVE
+=========================*/
+
+.search-box.active{
+
+    border-color:var(--primary);
+
+    box-shadow:0 0 0 4px rgba(79,125,243,.12);
+
+}
+
+
+/*=========================
+NOTIFICATION CLICK
+=========================*/
+
+.notification.clicked{
+
+    animation:bell .3s ease;
+
+}
+
+
+@keyframes bell{
+
+    0%{
+
+        transform:rotate(0);
+
+    }
+
+    25%{
+
+        transform:rotate(15deg);
+
+    }
+
+    50%{
+
+        transform:rotate(-15deg);
+
+    }
+
+    75%{
+
+        transform:rotate(10deg);
+
+    }
+
+    100%{
+
+        transform:rotate(0);
+
+    }
+
+}
+
 /* ==========================================================
-   END
+   NOTIFICATION BADGE
 ========================================================== */
+
+.notification{
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.notification-dot{
+
+    position:absolute;
+
+    top:6px;
+
+    right:6px;
+
+    width:18px;
+
+    height:18px;
+
+    background:#EF4444;
+
+    color:#fff;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:10px;
+
+    font-weight:700;
+
+}
+
+
+/* ==========================================================
+   RIPPLE EFFECT
+========================================================== */
+
+button{
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.ripple{
+
+    position:absolute;
+
+    width:20px;
+
+    height:20px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.45);
+
+    transform:translate(-50%,-50%) scale(0);
+
+    animation:rippleEffect .6s linear;
+
+}
+
+@keyframes rippleEffect{
+
+    to{
+
+        transform:translate(-50%,-50%) scale(15);
+
+        opacity:0;
+
+    }
+
+}
+
+/* ==========================================================
+   WIDGET FADE
+========================================================== */
+
+.widget{
+
+    opacity:0;
+
+    transform:translateY(20px);
+
+}
+
+.widget.show-widget{
+
+    opacity:1;
+
+    transform:translateY(0);
+
+    transition:
+        opacity .6s ease,
+        transform .6s ease;
+
+}
+
+
+/* ==========================================================
+   PAGE LOADED
+========================================================== */
+
+body.loaded{
+
+    animation:fadeDashboard .5s ease;
+
+}
+
+@keyframes fadeDashboard{
+
+    from{
+
+        opacity:0;
+
+    }
+
+    to{
+
+        opacity:1;
+
+    }
+
+}
+
+
+/* ==========================================================
+   PROGRESS BAR
+========================================================== */
+
+.progress-fill{
+
+    transition:width 1.5s ease;
+
+}
+
+
+/* ==========================================================
+   DEADLINE
+========================================================== */
+
+.deadline-item{
+
+    transition:
+        background .25s,
+        padding-left .25s;
+
+}
+
+.deadline-item:hover{
+
+    padding-left:10px;
+
+}
+
+
+/* ==========================================================
+   ACHIEVEMENT
+========================================================== */
+
+.achievement-card{
+
+    transition:
+        transform .25s,
+        box-shadow .25s;
+
+}
+
+.achievement-card:hover{
+
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
+
+}
+
+/* ==========================================================
+   DARK MODE
+========================================================== */
+
+body.dark{
+
+    background:#0F172A;
+
+    color:white;
+
+}
+
+body.dark .sidebar,
+body.dark .card,
+body.dark .widget,
+body.dark .notes,
+body.dark .achievements,
+body.dark .deadlines,
+body.dark .profile{
+
+    background:#1E293B;
+
+    color:white;
+
+}
+
+body.dark table{
+
+    color:white;
+
+}
+
+body.dark .search-box{
+
+    background:#1E293B;
+
+}
+
+body.dark input{
+
+    color:white;
+
+}
+
+
+/* ==========================================================
+   DARK BUTTON
+========================================================== */
+
+.dark-mode-btn{
+
+    width:46px;
+
+    height:46px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:white;
+
+    cursor:pointer;
+
+    box-shadow:var(--shadow-sm);
+
+}
+
+/* ==========================================================
+   CLOCK
+========================================================== */
+
+.clock{
+
+    margin-left:auto;
+
+    font-size:14px;
+
+    color:#64748B;
+
+    padding-left:20px;
+
+}
+
+
+/* ==========================================================
+   TOAST
+========================================================== */
+
+.toast{
+
+    position:fixed;
+
+    right:30px;
+
+    bottom:30px;
+
+    background:#4F7DF3;
+
+    color:white;
+
+    padding:15px 22px;
+
+    border-radius:14px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.18);
+
+    opacity:0;
+
+    transform:translateY(30px);
+
+    transition:.35s;
+
+    z-index:9999;
+
+}
+
+.toast.show{
+
+    opacity:1;
+
+    transform:translateY(0);
+
+}
+
+/* ==========================================================
+   RESPONSIVE DASHBOARD (NEW)
+========================================================== */
+
+
+/* ==========================================================
+   1200px - Laptop
+========================================================== */
+
+@media (max-width:1200px){
+
+    .dashboard-layout{
+        grid-template-columns:220px 1fr;
+    }
+
+    .main-content{
+        padding:28px;
+    }
+
+}
+
+
+/* ==========================================================
+   992px - Tablet
+========================================================== */
+
+@media (max-width:992px){
+
+    .dashboard-layout{
+        display:flex;
+        flex-direction:column;
+    }
+
+    .sidebar{
+
+        width:100%;
+        height:auto;
+
+        position:relative;
+
+        border-right:none;
+        border-bottom:1px solid #E5E7EB;
+
+        padding:18px 24px;
+
+    }
+
+    .logo{
+
+        margin-bottom:18px;
+
+    }
+
+    .menu{
+
+        display:flex;
+        justify-content:space-between;
+        gap:10px;
+        flex-wrap:wrap;
+
+    }
+
+    .menu li{
+
+        flex:1;
+        min-width:120px;
+
+        justify-content:center;
+
+    }
+
+    .sidebar-bottom{
+
+        margin-top:18px;
+
+    }
+
+    .main-content{
+
+        width:100%;
+        padding:24px;
+
+    }
+
+}
+
+/* ==========================================================
+   TOPBAR
+========================================================== */
+
+@media (max-width:992px){
+
+    .topbar{
+
+        flex-direction:column;
+        align-items:flex-start;
+        gap:20px;
+
+    }
+
+    .top-right{
+
+        width:100%;
+
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        gap:16px;
+
+        flex-wrap:wrap;
+
+    }
+
+    .search-box{
+
+        flex:1;
+        min-width:260px;
+
+    }
+
+}
+/* ==========================================================
+   PAGE HEADER
+========================================================== */
+
+@media (max-width:992px){
+
+    .page-header{
+
+        display:flex;
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:18px;
+
+    }
+
+    .page-header .btn-primary{
+
+        width:100%;
+        justify-content:center;
+
+    }
+
+}
+/* ==========================================================
+   STATS GRID
+========================================================== */
+
+@media (max-width:1200px){
+
+    .stats-grid{
+
+        display:grid;
+
+        grid-template-columns:repeat(2,1fr);
+
+        gap:20px;
+
+    }
+
+}
+
+@media (max-width:768px){
+
+    .stats-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+/* ==========================================================
+   CONTENT GRID
+========================================================== */
+
+@media (max-width:1200px){
+
+    .content-grid{
+
+        display:grid;
+
+        grid-template-columns:1fr;
+
+        gap:24px;
+
+    }
+
+}
+/* ==========================================================
+   LEFT COLUMN
+========================================================== */
+
+@media (max-width:1200px){
+
+    .left-column{
+
+        width:100%;
+
+        display:flex;
+
+        flex-direction:column;
+
+        gap:24px;
+
+    }
+
+}
+/* ==========================================================
+   RIGHT COLUMN
+========================================================== */
+
+@media (max-width:1200px){
+
+    .right-column{
+
+        width:100%;
+
+        display:grid;
+
+        grid-template-columns:repeat(2,1fr);
+
+        gap:20px;
+
+    }
+
+}
+
+@media (max-width:768px){
+
+    .right-column{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+/* ==========================================================
+   CARD SECTION
+========================================================== */
+
+@media (max-width:1200px){
+
+    .card-section{
+
+        width:100%;
+
+    }
+
+}
+/* ==========================================================
+   ALL CARDS
+========================================================== */
+
+@media (max-width:1200px){
+
+    .card{
+
+        width:100%;
+
+        min-width:0;
+
+    }
+
+}
+/* ==========================================================
+   NOTES TABLE
+========================================================== */
+
+@media (max-width:768px){
+
+    .notes-table{
+
+        overflow-x:auto;
+
+    }
+
+    .notes-table table{
+
+        min-width:700px;
+
+    }
+
+}
+/* ==========================================================
+   WIDGET RESPONSIVE
+========================================================== */
+
+@media (max-width:768px){
+
+    .widget,
+    .card-section{
+
+        padding:20px;
+        border-radius:18px;
+
+    }
+
+    .widget h3,
+    .section-title{
+
+        font-size:18px;
+
+    }
+
+}
+/* ==========================================================
+   SCHEDULE RESPONSIVE
+========================================================== */
+
+@media (max-width:768px){
+
+    .schedule-item{
+
+        display:flex;
+        align-items:flex-start;
+        gap:14px;
+
+    }
+
+    .schedule-time{
+
+        min-width:80px;
+
+        font-size:13px;
+
+    }
+
+    .schedule-event{
+
+        flex:1;
+
+    }
+
+}
+/* ==========================================================
+   GOAL RESPONSIVE
+========================================================== */
+
+@media (max-width:768px){
+
+    .goal-image-wrap{
+
+        height:190px;
+
+    }
+
+    .goal-image{
+
+        width:100%;
+        height:100%;
+
+        object-fit:cover;
+
+    }
+
+    .goal-footer{
+
+        display:flex;
+
+        justify-content:space-between;
+
+        align-items:center;
+
+        margin-top:16px;
+
+        gap:12px;
+
+        flex-wrap:wrap;
+
+    }
+
+}
+/* ==========================================================
+   CHART RESPONSIVE
+========================================================== */
+
+@media (max-width:768px){
+
+    .chart-wrap{
+
+        height:240px;
+
+    }
+
+    .chart-wrap canvas{
+
+        width:100% !important;
+        height:100% !important;
+
+    }
+
+}
+/* ==========================================================
+   BOTTOM ROW
+========================================================== */
+
+@media (max-width:992px){
+
+    .bottom-row{
+
+        display:grid;
+
+        grid-template-columns:1fr;
+
+        gap:24px;
+
+    }
+
+}
+/* ==========================================================
+   ACHIEVEMENT CARD
+========================================================== */
+
+@media (max-width:768px){
+
+    .achievement-card{
+
+        display:flex;
+
+        align-items:center;
+
+        gap:14px;
+
+        padding:16px;
+
+    }
+
+    .achievement-info{
+
+        flex:1;
+
+    }
+
+}
+/* ==========================================================
+   DEADLINE RESPONSIVE
+========================================================== */
+
+@media (max-width:768px){
+
+    .deadline-item{
+
+        display:flex;
+
+        flex-wrap:wrap;
+
+        gap:12px;
+
+        align-items:flex-start;
+
+    }
+
+    .priority-badge{
+
+        margin-left:auto;
+
+    }
+
+}
+/* ==========================================================
+   TABLE MOBILE
+========================================================== */
+
+@media (max-width:768px){
+
+    .notes-table{
+
+        overflow-x:auto;
+
+        -webkit-overflow-scrolling:touch;
+
+    }
+
+    .notes-table table{
+
+        min-width:720px;
+
+    }
+
+}
+/* ==========================================================
+   MOBILE SPACING
+========================================================== */
+
+@media (max-width:576px){
+
+    .main-content{
+
+        padding:16px;
+
+    }
+
+    .card,
+    .card-section,
+    .widget{
+
+        padding:18px;
+
+    }
+
+}
+/* ==========================================================
+   SMALL PHONE (430px)
+========================================================== */
+
+@media (max-width:430px){
+
+    .main-content{
+
+        padding:14px;
+
+    }
+
+    .topbar{
+
+        gap:16px;
+
+    }
+
+    .search-box{
+
+        width:100%;
+        min-width:unset;
+
+    }
+
+    .profile{
+
+        width:100%;
+
+        justify-content:center;
+
+    }
+
+    .profile img{
+
+        width:42px;
+        height:42px;
+
+    }
+
+    .page-header h1{
+
+        font-size:26px;
+
+    }
+
+    .page-header p{
+
+        font-size:14px;
+
+    }
+
+}
+/* ==========================================================
+   MOBILE STAT CARD
+========================================================== */
+
+@media (max-width:430px){
+
+    .stat-card{
+
+        padding:18px;
+
+    }
+
+    .stat-value{
+
+        font-size:28px;
+
+    }
+
+    .stat-label{
+
+        font-size:13px;
+
+    }
+
+    .stat-sub{
+
+        font-size:12px;
+
+    }
+
+}
+/* ==========================================================
+   TABLE SCROLL
+========================================================== */
+
+@media (max-width:430px){
+
+    .notes-table{
+
+        overflow-x:auto;
+
+        scrollbar-width:thin;
+
+    }
+
+    .notes-table table{
+
+        min-width:760px;
+
+    }
+
+}
+/* ==========================================================
+   ACHIEVEMENT MOBILE
+========================================================== */
+
+@media (max-width:430px){
+
+    .achievement-card{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+    }
+
+    .achievement-icon{
+
+        margin-bottom:10px;
+
+    }
+
+}
+/* ==========================================================
+   DEADLINE MOBILE
+========================================================== */
+
+@media (max-width:430px){
+
+    .deadline-item{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+    }
+
+    .priority-badge{
+
+        margin-top:8px;
+
+        margin-left:0;
+
+    }
+
+}
+/* ==========================================================
+   MOBILE WIDGET
+========================================================== */
+
+@media (max-width:430px){
+
+    .card-section{
+
+        padding:18px;
+
+    }
+
+    .section-title{
+
+        font-size:18px;
+
+    }
+
+}
+/* ==========================================================
+   BUTTON MOBILE
+========================================================== */
+
+@media (max-width:430px){
+
+    .btn-primary{
+
+        width:100%;
+
+        justify-content:center;
+
+    }
+
+}
+/* ==========================================================
+   MOBILE PERFORMANCE
+========================================================== */
+
+@media (max-width:768px){
+
+    .card,
+    .card-section,
+    .stat-card{
+
+        animation:none;
+
+        transition:.2s;
+
+    }
+
+    .card:hover,
+    .card-section:hover,
+    .stat-card:hover{
+
+        transform:none;
+
+    }
+
+}
+/* ==========================================================
+   IMAGE RESPONSIVE
+========================================================== */
+
+img{
+
+    max-width:100%;
+    height:auto;
+
+}
+/* ==========================================================
+   CANVAS RESPONSIVE
+========================================================== */
+
+canvas{
+
+    display:block;
+
+    width:100% !important;
+
+    max-width:100%;
+
+}
+/* ==========================================================
+   OVERFLOW FIX
+========================================================== */
+
+html,
+body{
+
+    overflow-x:hidden;
+
+}
+
+.dashboard-layout{
+
+    width:100%;
+
+    overflow-x:hidden;
+
+}
+
+.main-content{
+
+    min-width:0;
+
+}
+
+.left-column,
+.right-column{
+
+    min-width:0;
+
+}
+
+.content-grid{
+
+    width:100%;
+
+}
+
+.card-section,
+.stat-card,
+.notes-table{
+
+    max-width:100%;
+
+}
