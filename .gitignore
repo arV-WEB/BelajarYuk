@@ -14,7 +14,6 @@ __pycache__/
 # Environment Variables
 # ==========================
 .env
-.env.example
 
 # ==========================
 # Flask
@@ -35,6 +34,8 @@ htmlcov/
 build/
 dist/
 *.egg-info/
+Dockerfile
+.dockerignore
 
 # ==========================
 # Logs
