@@ -1,0 +1,110 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <div>
+        <h1 class="page-title">New Study Note</h1>
+        <p class="page-subtitle">Capture what you just learned before you forget it.</p>
+    </div>
+    <a href="{{ url_for('notes') }}" class="btn-premium btn-premium-secondary">
+        <i class="fa-solid fa-arrow-left"></i> Back to Notes
+    </a>
+</div>
+
+<div class="card-premium">
+    <form id="createNoteForm">
+        <div class="form-group-premium">
+            <label for="noteTitle" class="form-label-premium">Note Title</label>
+            <input type="text" class="form-control-premium" id="noteTitle" required placeholder="e.g. Operating Systems Lecture 2">
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group-premium">
+                    <label for="noteSubject" class="form-label-premium">Subject</label>
+                    <select class="form-control-premium" id="noteSubject">
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Mathematics">Mathematics</option>
+                        <option value="Database">Database</option>
+                        <option value="Physics">Physics</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group-premium">
+                    <label for="noteDate" class="form-label-premium">Date</label>
+                    <input type="date" class="form-control-premium" id="noteDate" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group-premium">
+            <label for="noteSummary" class="form-label-premium">Short Summary</label>
+            <input type="text" class="form-control-premium" id="noteSummary" placeholder="One-line summary shown on the notes list" maxlength="150">
+        </div>
+
+        <div class="form-group-premium">
+            <label for="noteContent" class="form-label-premium">Content</label>
+            <textarea class="form-control-premium" id="noteContent" rows="8" placeholder="Write your notes here..." required></textarea>
+        </div>
+
+        <div class="form-group-premium">
+            <label for="noteTags" class="form-label-premium">Tags (Optional)</label>
+            <input type="text" class="form-control-premium" id="noteTags" placeholder="e.g. kernel, process, memory (comma separated)">
+        </div>
+
+        <div class="d-flex justify-content-end gap-2 mt-4">
+            <a href="{{ url_for('notes') }}" class="btn-premium btn-premium-secondary">Cancel</a>
+            <button type="submit" class="btn-premium btn-premium-primary">
+                <i class="fa-solid fa-floppy-disk"></i> Save Note
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Default date to today
+    document.getElementById('noteDate').valueAsDate = new Date();
+
+    document.getElementById('createNoteForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const title = document.getElementById('noteTitle').value.trim();
+        const subject = document.getElementById('noteSubject').value;
+        const dateValue = document.getElementById('noteDate').value;
+        const summary = document.getElementById('noteSummary').value.trim();
+        const content = document.getElementById('noteContent').value.trim();
+        const tags = document.getElementById('noteTags').value
+            .split(',')
+            .map(t => t.trim())
+            .filter(Boolean);
+
+        if (!title || !content) {
+            return;
+        }
+
+        const formattedDate = new Date(dateValue + 'T00:00:00').toLocaleDateString('en-US', {
+            year: 'numeric', month: 'long', day: 'numeric'
+        });
+
+        const notes = JSON.parse(localStorage.getItem('belajaryuk_notes') || '[]');
+        notes.unshift({
+            id: 'note_' + Date.now(),
+            title: title,
+            subject: subject,
+            date: formattedDate,
+            summary: summary || content.slice(0, 120),
+            content: content,
+            tags: tags
+        });
+        localStorage.setItem('belajaryuk_notes', JSON.stringify(notes));
+
+        window.location.href = "{{ url_for('notes') }}";
+    });
+});
+</script>
+{% endblock %}
