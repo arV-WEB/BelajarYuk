@@ -1,3 +1,6 @@
-from flask_sqlalchemy import SQLAlchemy
+import psycopg2
+from config import Config
 
-db = SQLAlchemy()
+
+def get_connection():
+    return psycopg2.connect(Config.DATABASE_URL)
