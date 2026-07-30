@@ -7,10 +7,12 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'belajaryuk-dev-secret-key-129847192'
     IS_VERCEL = os.environ.get('VERCEL') == '1'
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or (
-        'sqlite:////tmp/belajaryuk.db' if IS_VERCEL
-        else 'sqlite:///' + os.path.join(BASE_DIR, 'belajaryuk.db')
-    )
+    DATABASE_URL = os.environ.get('DATABASE_URL')
+
+    if IS_VERCEL and not DATABASE_URL:
+        raise RuntimeError('DATABASE_URL must be set in Vercel Environment Variables.')
+
+    SQLALCHEMY_DATABASE_URI = DATABASE_URL or 'sqlite:///' + os.path.join(BASE_DIR, 'belajaryuk.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENGINE_OPTIONS = {
         'pool_pre_ping': True,   # cek koneksi masih hidup sebelum dipakai (penting untuk DB online)
