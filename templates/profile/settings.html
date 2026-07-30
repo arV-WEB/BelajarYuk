@@ -1,0 +1,356 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">Settings</h1>
+    <p class="page-subtitle">Manage your account details, preferences, and security settings for BelajarYuk.</p>
+</div>
+
+<!-- Section 1: Profile Information -->
+<div class="card-premium">
+    <h3 class="card-title-premium"><i class="fa-regular fa-user"></i> Profile Information</h3>
+    <p class="text-secondary mb-4" style="font-size: 0.85rem;">Update your personal details and how others see you on the platform.</p>
+    
+    <form action="{{ url_for('update_profile') }}" method="POST" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="profile-photo-container">
+                    {% if current_user.profile_pic %}
+                        <img src="{{ url_for('static', filename='uploads/' + current_user.profile_pic) }}" alt="Profile Photo" class="profile-photo-preview" id="avatarPreview">
+                    {% else %}
+                        <div class="profile-photo-preview d-flex align-items-center justify-content-center bg-light text-primary font-weight-bold" id="avatarPreview" style="font-size: 3rem;">
+                            {{ current_user.full_name[0] | upper }}
+                        </div>
+                    {% endif %}
+                    <span class="text-muted text-center" style="font-size: 0.75rem;">PROFILE PHOTO<br>JPG, PNG or WEBP. Max 1MB.</span>
+                    
+                    <div class="avatar-upload-btn-wrapper">
+                        <button type="button" class="btn-premium btn-premium-secondary"><i class="fa-solid fa-camera"></i> Change Photo</button>
+                        <input type="file" name="profile_pic" accept="image/*" onchange="previewImage(this)">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-9">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group-premium">
+                            <label for="fullName" class="form-label-premium">Full Name</label>
+                            <input type="text" id="fullName" name="full_name" class="form-control-premium" value="{{ current_user.full_name }}" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group-premium">
+                            <label for="email" class="form-label-premium">Email Address</label>
+                            <input type="email" id="email" class="form-control-premium" value="{{ current_user.email }}" readonly disabled>
+                            <small class="text-muted">Email address cannot be changed.</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group-premium">
+                            <label for="phoneNumber" class="form-label-premium">Phone Number (Optional)</label>
+                            <input type="text" id="phoneNumber" name="phone" class="form-control-premium" value="{{ current_user.phone or '' }}" placeholder="+1 (555) 000-0000">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group-premium">
+                            <label for="fieldStudy" class="form-label-premium">Field of Study</label>
+                            <select id="fieldStudy" name="field_of_study" class="form-control-premium">
+                                <option value="Computer Science" {{ 'selected' if current_user.field_of_study == 'Computer Science' else '' }}>Computer Science</option>
+                                <option value="Information Systems" {{ 'selected' if current_user.field_of_study == 'Information Systems' else '' }}>Information Systems</option>
+                                <option value="Mathematics" {{ 'selected' if current_user.field_of_study == 'Mathematics' else '' }}>Mathematics</option>
+                                <option value="Biology" {{ 'selected' if current_user.field_of_study == 'Biology' else '' }}>Biology</option>
+                                <option value="Physics" {{ 'selected' if current_user.field_of_study == 'Physics' else '' }}>Physics</option>
+                                <option value="Chemistry" {{ 'selected' if current_user.field_of_study == 'Chemistry' else '' }}>Chemistry</option>
+                                <option value="Business Administration" {{ 'selected' if current_user.field_of_study == 'Business Administration' else '' }}>Business Administration</option>
+                                <option value="Other" {{ 'selected' if current_user.field_of_study == 'Other' else '' }}>Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group-premium">
+                    <label for="shortBio" class="form-label-premium">Short Bio</label>
+                    <textarea id="shortBio" name="bio" class="form-control-premium" rows="3" placeholder="Tell us about yourself...">{{ current_user.bio or '' }}</textarea>
+                </div>
+                
+                <div class="text-end">
+                    <button type="submit" class="btn-premium btn-premium-primary">
+                        <i class="fa-solid fa-floppy-disk"></i> Update Profile
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Section 2: Change Password -->
+<div class="card-premium">
+    <h3 class="card-title-premium"><i class="fa-solid fa-lock"></i> Change Password</h3>
+    <p class="text-secondary mb-4" style="font-size: 0.85rem;">Keep your account secure by regularly updating your password.</p>
+    
+    <form action="{{ url_for('update_password') }}" method="POST">
+        <div class="form-group-premium">
+            <label for="currentPassword" class="form-label-premium">Current Password</label>
+            <input type="password" id="currentPassword" name="current_password" class="form-control-premium" placeholder="••••••••" required>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group-premium">
+                    <label for="newPassword" class="form-label-premium">New Password</label>
+                    <input type="password" id="newPassword" name="new_password" class="form-control-premium" placeholder="Min. 8 characters" required>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group-premium">
+                    <label for="confirmPassword" class="form-label-premium">Confirm New Password</label>
+                    <input type="password" id="confirmPassword" name="confirm_password" class="form-control-premium" placeholder="Repeat new password" required>
+                </div>
+            </div>
+        </div>
+        
+        <div class="alert alert-success d-flex align-items-center mb-4 py-2 px-3 bg-light border-0 text-success" style="font-size: 0.8rem;">
+            <i class="fa-regular fa-circle-check me-2"></i>
+            <span>Use a strong password combining uppercase, lowercase, numbers, and symbols to ensure your study data remains private.</span>
+        </div>
+        
+        <button type="submit" class="btn-premium btn-premium-secondary">Update Password</button>
+    </form>
+</div>
+
+<!-- Section 3: Notification Preferences -->
+<div class="card-premium">
+    <h3 class="card-title-premium"><i class="fa-regular fa-bell"></i> Notification Preferences</h3>
+    <p class="text-secondary mb-4" style="font-size: 0.85rem;">Control how and when BelajarYuk contacts you about your academic progress.</p>
+    
+    <div class="switch-list">
+        <div class="switch-item">
+            <div class="switch-info">
+                <span class="switch-title">Email Notifications</span>
+                <span class="switch-desc">Receive weekly summaries and important account updates via email.</span>
+            </div>
+            <label class="toggle-switch">
+                <input type="checkbox" id="pref-email" onchange="savePreferences()" {{ 'checked' if not current_user.settings or current_user.settings.email_notifications else '' }}>
+                <span class="slider-switch"></span>
+            </label>
+        </div>
+        
+        <div class="switch-item">
+            <div class="switch-info">
+                <span class="switch-title">Study Reminders</span>
+                <span class="switch-desc">Get notified when it's time for your scheduled study sessions.</span>
+            </div>
+            <label class="toggle-switch">
+                <input type="checkbox" id="pref-reminders" onchange="savePreferences()" {{ 'checked' if not current_user.settings or current_user.settings.study_reminders else '' }}>
+                <span class="slider-switch"></span>
+            </label>
+        </div>
+        
+        <div class="switch-item">
+            <div class="switch-info">
+                <span class="switch-title">Weekly Summary</span>
+                <span class="switch-desc">A detailed report of your study hours and goals achieved every Monday.</span>
+            </div>
+            <label class="toggle-switch">
+                <input type="checkbox" id="pref-weekly" onchange="savePreferences()" {{ 'checked' if not current_user.settings or current_user.settings.weekly_summary else '' }}>
+                <span class="slider-switch"></span>
+            </label>
+        </div>
+        
+        <div class="switch-item">
+            <div class="switch-info">
+                <span class="switch-title">Goal Alerts</span>
+                <span class="switch-desc">Notifications when you are close to a deadline or reach a major academic milestone.</span>
+            </div>
+            <label class="toggle-switch">
+                <input type="checkbox" id="pref-goals" onchange="savePreferences()" {{ 'checked' if not current_user.settings or current_user.settings.goal_alerts else '' }}>
+                <span class="slider-switch"></span>
+            </label>
+        </div>
+    </div>
+</div>
+
+<!-- Section 4: Appearance & Language -->
+<div class="card-premium">
+    <h3 class="card-title-premium"><i class="fa-solid fa-display"></i> Appearance & Language</h3>
+    <p class="text-secondary mb-4" style="font-size: 0.85rem;">Customize the look and feel of the application to match your preference.</p>
+    
+    <div class="row">
+        <!-- Theme Select -->
+        <div class="col-md-6 mb-3">
+            <label class="form-label-premium">Interface Theme</label>
+            <div class="theme-selector-grid">
+                <div class="theme-card {{ 'active' if not current_user.settings or current_user.settings.theme == 'light' else '' }}" onclick="selectTheme('light')">
+                    <i class="fa-regular fa-sun"></i>
+                    <span>Light</span>
+                </div>
+                <div class="theme-card {{ 'active' if current_user.settings and current_user.settings.theme == 'dark' else '' }}" onclick="selectTheme('dark')">
+                    <i class="fa-regular fa-moon"></i>
+                    <span>Dark</span>
+                </div>
+                <div class="theme-card {{ 'active' if current_user.settings and current_user.settings.theme == 'system' else '' }}" onclick="selectTheme('system')">
+                    <i class="fa-solid fa-laptop"></i>
+                    <span>System</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Language and Timezone -->
+        <div class="col-md-6">
+            <div class="form-group-premium">
+                <label for="pref-language" class="form-label-premium">Language</label>
+                <select id="pref-language" onchange="savePreferences()" class="form-control-premium">
+                    <option value="en-US" {{ 'selected' if not current_user.settings or current_user.settings.language == 'en-US' else '' }}>English (US)</option>
+                    <option value="id-ID" {{ 'selected' if current_user.settings and current_user.settings.language == 'id-ID' else '' }}>Bahasa Indonesia</option>
+                    <option value="es-ES" {{ 'selected' if current_user.settings and current_user.settings.language == 'es-ES' else '' }}>Español</option>
+                </select>
+            </div>
+            
+            <div class="form-group-premium">
+                <label for="pref-timezone" class="form-label-premium">Timezone</label>
+                <select id="pref-timezone" onchange="savePreferences()" class="form-control-premium">
+                    <option value="Mountain Time (MT)" {{ 'selected' if not current_user.settings or current_user.settings.timezone == 'Mountain Time (MT)' else '' }}>Mountain Time (MT)</option>
+                    <option value="Jakarta (WIB)" {{ 'selected' if current_user.settings and current_user.settings.timezone == 'Jakarta (WIB)' else '' }}>Jakarta (WIB)</option>
+                    <option value="UTC" {{ 'selected' if current_user.settings and current_user.settings.timezone == 'UTC' else '' }}>Coordinated Universal Time (UTC)</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Section 5: Account Management -->
+<div class="card-premium">
+    <h3 class="card-title-premium"><i class="fa-solid fa-shield-halved"></i> Account Management</h3>
+    <p class="text-secondary mb-4" style="font-size: 0.85rem;">Control your data and account longevity.</p>
+    
+    <div class="row">
+        <!-- Export data -->
+        <div class="col-md-6 mb-3">
+            <div class="p-3 border rounded h-100 bg-light d-flex flex-column justify-content-between">
+                <div>
+                    <h5 class="fw-bold mb-2" style="font-size: 0.95rem;">Data Portability</h5>
+                    <p class="text-secondary" style="font-size: 0.8rem;">Download all your study notes and goals in JSON format. Keep a local backup of your hard-earned insights and academic history.</p>
+                </div>
+                <button type="button" class="btn-premium btn-premium-secondary mt-2 align-self-start" onclick="exportData()">
+                    <i class="fa-solid fa-download"></i> Export My Notes
+                </button>
+            </div>
+        </div>
+        
+        <!-- Danger zone -->
+        <div class="col-md-6 mb-3">
+            <div class="p-3 border rounded border-danger h-100 bg-light d-flex flex-column justify-content-between">
+                <div>
+                    <h5 class="fw-bold text-danger mb-2" style="font-size: 0.95rem;">Danger Zone</h5>
+                    <p class="text-secondary" style="font-size: 0.8rem;">Once deleted, your account cannot be recovered. Permanently remove all notes, goals, and personal settings from our servers.</p>
+                </div>
+                <form action="{{ url_for('delete_account') }}" method="POST" onsubmit="return confirm('WARNING: Are you sure you want to permanently delete your account? This action is irreversible.');">
+                    <button type="submit" class="btn-premium btn-premium-danger mt-2 align-self-start">
+                        <i class="fa-solid fa-trash-can"></i> Delete Account
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Image upload preview helper
+function previewImage(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            const preview = document.getElementById('avatarPreview');
+            if (preview.tagName === 'IMG') {
+                preview.src = e.target.result;
+            } else {
+                // If it's a div (fallback letter avatar), replace with img
+                const img = document.createElement('img');
+                img.id = 'avatarPreview';
+                img.src = e.target.result;
+                img.className = 'profile-photo-preview';
+                preview.replaceWith(img);
+            }
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+// Handle Theme Click Selector UI
+function selectTheme(theme) {
+    // Update UI active card
+    const cards = document.querySelectorAll('.theme-card');
+    cards.forEach(c => c.classList.remove('active'));
+    
+    // Find matching card
+    let index = 0;
+    if (theme === 'dark') index = 1;
+    if (theme === 'system') index = 2;
+    cards[index].classList.add('active');
+    
+    // Apply local changes immediately
+    window.updateAppTheme(theme);
+    
+    // Save to Database
+    savePreferences(theme);
+}
+
+// Gather settings values and push to API
+function savePreferences(optTheme) {
+    const payload = {
+        email_notifications: document.getElementById('pref-email').checked,
+        study_reminders: document.getElementById('pref-reminders').checked,
+        weekly_summary: document.getElementById('pref-weekly').checked,
+        goal_alerts: document.getElementById('pref-goals').checked,
+        language: document.getElementById('pref-language').value,
+        timezone: document.getElementById('pref-timezone').value
+    };
+    
+    // Add theme if specified
+    if (optTheme) {
+        payload.theme = optTheme;
+    } else {
+        // Otherwise determine from current active card
+        const cards = document.querySelectorAll('.theme-card');
+        let currentTheme = 'light';
+        if (cards[1].classList.contains('active')) currentTheme = 'dark';
+        if (cards[2].classList.contains('active')) currentTheme = 'system';
+        payload.theme = currentTheme;
+    }
+    
+    fetch('/api/settings/preferences', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    })
+    .then(res => res.json())
+    .then(data => {
+        // Successfully saved
+        console.log('Preferences updated', data);
+    })
+    .catch(err => console.error(err));
+}
+
+// Export data portability trigger
+function exportData() {
+    fetch('/api/settings/export')
+    .then(res => res.json())
+    .then(data => {
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 4));
+        const downloadAnchor = document.createElement('a');
+        downloadAnchor.setAttribute("href", dataStr);
+        downloadAnchor.setAttribute("download", "belajaryuk_notes_backup.json");
+        document.body.appendChild(downloadAnchor);
+        downloadAnchor.click();
+        downloadAnchor.remove();
+    })
+    .catch(err => console.error(err));
+}
+</script>
+{% endblock %}
