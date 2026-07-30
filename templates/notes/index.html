@@ -1,1 +1,82 @@
-<!-- Notes List Page -->
+{% extends 'layout/base.html' %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">Study Notes</h1>
+    <p class="page-subtitle">Organize and search your hard-earned knowledge.</p>
+</div>
+
+<div class="card-premium">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="m-0"><i class="fa-regular fa-file-lines me-2"></i>Recent Notes</h3>
+        <a href="{{ url_for('notes_create') }}" class="btn-premium btn-premium-primary"><i class="fa-solid fa-plus"></i> New Note</a>
+    </div>
+
+    <div class="list-group" id="dynamicNotesList">
+        <!-- Notes created by the user are injected here -->
+    </div>
+
+    <div class="list-group">
+        <div class="list-group-item list-group-item-action p-3 border-0 bg-light rounded mb-2">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1 text-primary">Operating Systems Lecture 1</h5>
+                <small class="text-muted">May 12, 2024</small>
+            </div>
+            <p class="mb-1 text-secondary">Notes about kernel vs user mode and process lifecycle.</p>
+        </div>
+        
+        <div class="list-group-item list-group-item-action p-3 border-0 bg-light rounded mb-2">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1 text-primary">Database Design Schema</h5>
+                <small class="text-muted">May 18, 2024</small>
+            </div>
+            <p class="mb-1 text-secondary">Notes on ERDs, normalization (1NF, 2NF, 3NF, BCNF) and primary keys.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const container = document.getElementById('dynamicNotesList');
+    const notes = JSON.parse(localStorage.getItem('belajaryuk_notes') || '[]');
+
+    if (!notes.length) return;
+
+    notes.forEach(function (note) {
+        const item = document.createElement('div');
+        item.className = 'list-group-item list-group-item-action p-3 border-0 bg-light rounded mb-2';
+        item.innerHTML = `
+            <div class="d-flex w-100 justify-content-between align-items-start">
+                <h5 class="mb-1 text-primary">${escapeHtml(note.title)}</h5>
+                <div class="d-flex align-items-center gap-2">
+                    <small class="text-muted">${escapeHtml(note.date)}</small>
+                    <button class="btn btn-sm text-danger border-0 bg-transparent p-0 ms-2" title="Delete note" data-id="${note.id}">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
+            </div>
+            <p class="mb-1 text-secondary">${escapeHtml(note.summary)}</p>
+            ${note.subject ? `<span class="badge bg-primary-subtle text-primary mt-1">${escapeHtml(note.subject)}</span>` : ''}
+        `;
+        container.appendChild(item);
+    });
+
+    container.addEventListener('click', function (e) {
+        const btn = e.target.closest('button[data-id]');
+        if (!btn) return;
+        const id = btn.getAttribute('data-id');
+        const updated = notes.filter(n => n.id !== id);
+        localStorage.setItem('belajaryuk_notes', JSON.stringify(updated));
+        btn.closest('.list-group-item').remove();
+    });
+
+    function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str == null ? '' : str;
+        return div.innerHTML;
+    }
+});
+</script>
+{% endblock %}

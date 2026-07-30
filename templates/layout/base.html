@@ -1,1 +1,129 @@
-<!-- Base HTML Template -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BelajarYuk - {{ title }}</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- FullCalendar CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+    <!-- Custom Style -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <script>
+        // Apply theme early to prevent flash of wrong theme
+        (function() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'system') {
+                const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', systemTheme);
+            } else {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            }
+        })();
+    </script>
+</head>
+<body>
+    {% if current_user.is_authenticated %}
+    <div class="app-container">
+        <!-- Sidebar -->
+        {% include 'layout/sidebar.html' %}
+        
+        <!-- Main Content Area -->
+        <div class="main-wrapper">
+            <!-- Navbar -->
+            {% include 'layout/navbar.html' %}
+            
+            <!-- Page Content -->
+            <main class="page-content">
+                <!-- Flask Flash Messages -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ 'danger' if category == 'error' or category == 'danger' else 'success' }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                
+                {% block content %}{% endblock %}
+            </main>
+            
+            <!-- Footer -->
+            {% include 'layout/footer.html' %}
+        </div>
+    </div>
+    {% else %}
+        {% block auth_content %}{% endblock %}
+    {% endif %}
+
+    <!-- Bootstrap Bundle JS -->
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    
+    <script>
+        // Helper to update theme dynamically when settings change
+        window.updateAppTheme = function(theme) {
+            localStorage.setItem('theme', theme);
+            if (theme === 'system') {
+                const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', systemTheme);
+            } else {
+                document.documentElement.setAttribute('data-theme', theme);
+            }
+        };
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            if (localStorage.getItem('theme') === 'system') {
+                document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+            }
+        });
+        {% if current_user.is_authenticated and current_user.settings %}
+            const dbTheme = "{{ current_user.settings.theme }}";
+            if (localStorage.getItem('theme') !== dbTheme) {
+                window.updateAppTheme(dbTheme);
+            }
+        {% endif %}
+
+        // Sidebar Toggle for Mobile
+        function toggleSidebar() {
+            const sidebar = document.getElementById('mainSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('sidebar-open');
+            overlay.classList.toggle('active');
+            document.body.classList.toggle('sidebar-is-open');
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('mainSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.remove('sidebar-open');
+            overlay.classList.remove('active');
+            document.body.classList.remove('sidebar-is-open');
+        }
+
+        // Mobile search toggle
+        function closeMobileSearch() {
+            document.getElementById('mobileSearchBar').classList.remove('active');
+        }
+
+        document.querySelector('.mobile-search-btn') && document.querySelector('.mobile-search-btn').addEventListener('click', function() {
+            document.getElementById('mobileSearchBar').classList.toggle('active');
+        });
+
+        // Close sidebar on nav link click (mobile)
+        document.querySelectorAll('.sidebar .nav-item').forEach(function(link) {
+            link.addEventListener('click', function() {
+                if (window.innerWidth < 992) {
+                    closeSidebar();
+                }
+            });
+        });
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
+

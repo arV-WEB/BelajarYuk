@@ -1,1 +1,45 @@
-<!-- Register Page -->
+{% extends 'layout/base.html' %}
+
+{% block auth_content %}
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <div class="auth-header">
+            <a href="#" class="auth-logo">
+                <i class="fa-solid fa-book-open"></i>
+                <span>BelajarYuk</span>
+            </a>
+            <p class="auth-subtitle">Create your account to start learning</p>
+        </div>
+        
+        <form action="{{ url_for('register') }}" method="POST">
+            <div class="form-group-premium">
+                <label for="username" class="form-label-premium">Username</label>
+                <input type="text" id="username" name="username" class="form-control-premium" required placeholder="alexjohnson">
+            </div>
+            
+            <div class="form-group-premium">
+                <label for="email" class="form-label-premium">Email Address</label>
+                <input type="email" id="email" name="email" class="form-control-premium" required placeholder="alex.johnson@student.edu">
+            </div>
+            
+            <div class="form-group-premium">
+                <label for="full_name" class="form-label-premium">Full Name</label>
+                <input type="text" id="full_name" name="full_name" class="form-control-premium" required placeholder="Alex Johnson">
+            </div>
+            
+            <div class="form-group-premium">
+                <label for="password" class="form-label-premium">Password</label>
+                <input type="password" id="password" name="password" class="form-control-premium" required placeholder="Min. 8 characters">
+            </div>
+            
+            <button type="submit" class="btn-premium btn-premium-primary w-100 mt-2">
+                <i class="fa-solid fa-user-plus"></i> Register
+            </button>
+        </form>
+        
+        <div class="auth-links">
+            Already have an account? <a href="{{ url_for('login') }}">Login</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
