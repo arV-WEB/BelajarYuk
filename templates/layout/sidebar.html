@@ -1,1 +1,44 @@
-<!-- Sidebar Fragment -->
+<!-- Sidebar Overlay (mobile) -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<aside class="sidebar" id="mainSidebar">
+    <!-- Close button (mobile only) -->
+    <button class="sidebar-close-btn d-lg-none" onclick="closeSidebar()" aria-label="Close sidebar">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+
+    <a href="{{ url_for('calendar_view') }}" class="brand-logo">
+        <i class="fa-solid fa-book-open"></i>
+        <span class="brand-name">BelajarYuk</span>
+    </a>
+    
+    <nav class="sidebar-nav">
+        <a href="{{ url_for('dashboard') }}" class="nav-item {{ 'active' if request.path == url_for('dashboard') else '' }}">
+            <i class="fa-solid fa-chart-simple"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="{{ url_for('notes') }}" class="nav-item {{ 'active' if request.path == url_for('notes') else '' }}">
+            <i class="fa-regular fa-file-lines"></i>
+            <span>Study Note</span>
+        </a>
+        <a href="{{ url_for('calendar_view') }}" class="nav-item {{ 'active' if request.path == url_for('calendar_view') else '' }}">
+            <i class="fa-regular fa-calendar-days"></i>
+            <span>Calendar</span>
+        </a>
+        <a href="{{ url_for('goals') }}" class="nav-item {{ 'active' if request.path == url_for('goals') else '' }}">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span>Academic Goals</span>
+        </a>
+    </nav>
+    
+    <div class="sidebar-footer">
+        <a href="{{ url_for('settings_view') }}" class="nav-item {{ 'active' if request.path == url_for('settings_view') else '' }}">
+            <i class="fa-solid fa-gear"></i>
+            <span>Settings</span>
+        </a>
+        <a href="{{ url_for('logout') }}" class="nav-item logout-item">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <span>Log Out</span>
+        </a>
+    </div>
+</aside>
