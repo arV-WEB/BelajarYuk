@@ -27,58 +27,63 @@ login_manager.login_view = 'login'
 def load_user(user_id):
     return db.session.get(User, int(user_id))
 
-# DB initialization & seeding on startup
-with app.app_context():
-    db.create_all()
-    if not User.query.filter_by(username='alexjohnson').first():
-        user = User(
-            username='alexjohnson',
-            email='alex.johnson@student.edu',
-            full_name='Alex Johnson',
-            phone='+1 (555) 000-0000',
-            field_of_study='Computer Science',
-            bio='Passionate about software engineering and machine learning. Currently focusing on building consistent study habits.',
-        )
-        user.set_password('password123')
-        db.session.add(user)
-        db.session.commit()
-        
-        # Add default settings
-        settings = Settings(
-            user_id=user.id,
-            email_notifications=True,
-            study_reminders=True,
-            weekly_summary=True,
-            goal_alerts=True,
-            theme='light',
-            language='en-US',
-            timezone='Mountain Time (MT)'
-        )
-        db.session.add(settings)
-        
-        # Add mock events for May 2024
-        mock_events = [
-            Event(user_id=user.id, title='Algorithmic Study', description='Focusing on sorting and graph search algorithms.', start_time=datetime(2024, 5, 10, 10, 0), end_time=datetime(2024, 5, 10, 12, 0), category='Study Sessions', all_day=False),
-            Event(user_id=user.id, title='Data Structures', description='Reviewing Trees, Heaps, and Tries.', start_time=datetime(2024, 5, 15, 13, 0), end_time=datetime(2024, 5, 15, 15, 0), category='Study Sessions', all_day=False),
-            Event(user_id=user.id, title='Library Return', description='Return textbook: Introduction to Algorithms.', start_time=datetime(2024, 5, 15, 17, 0), end_time=datetime(2024, 5, 15, 17, 30), category='Reminders', all_day=False),
-            Event(user_id=user.id, title='Biology Revision', description='Study session on Genetics and DNA replication.', start_time=datetime(2024, 5, 18, 10, 0), end_time=datetime(2024, 5, 18, 12, 0), category='Study Sessions', all_day=False),
-            Event(user_id=user.id, title='Biology Lab', description='Genetics lab assignment submission.', start_time=datetime(2024, 5, 18, 14, 0), end_time=datetime(2024, 5, 18, 16, 0), category='Study Sessions', all_day=False),
-            Event(user_id=user.id, title='Database Assignment', description='SQL query optimization homework submission.', start_time=datetime(2024, 5, 20, 23, 59), end_time=datetime(2024, 5, 20, 23, 59), category='Deadlines', all_day=True),
-            Event(user_id=user.id, title='DB Project', description='Database design phase 2 documentation.', start_time=datetime(2024, 5, 20, 15, 0), end_time=datetime(2024, 5, 20, 17, 0), category='Deadlines', all_day=False),
-            Event(user_id=user.id, title='English Presentation', description='Prepare and deliver presentation on Tech & Society.', start_time=datetime(2024, 5, 22, 14, 30), end_time=datetime(2024, 5, 22, 16, 0), category='Study Sessions', all_day=False),
-            Event(user_id=user.id, title='Midterm Exam', description='Computer Systems midterm examination.', start_time=datetime(2024, 5, 25, 9, 0), end_time=datetime(2024, 5, 25, 11, 30), category='Exams', all_day=False),
-            Event(user_id=user.id, title='Final Calculus', description='Calculus III exam prep and test.', start_time=datetime(2024, 5, 25, 13, 0), end_time=datetime(2024, 5, 25, 15, 0), category='Exams', all_day=False),
-        ]
-        db.session.bulk_save_objects(mock_events)
-        db.session.commit()
+def initialize_database():
+    with app.app_context():
+        db.create_all()
+        if not User.query.filter_by(username='alexjohnson').first():
+            user = User(
+                username='alexjohnson',
+                email='alex.johnson@student.edu',
+                full_name='Alex Johnson',
+                phone='+1 (555) 000-0000',
+                field_of_study='Computer Science',
+                bio='Passionate about software engineering and machine learning. Currently focusing on building consistent study habits.',
+            )
+            user.set_password('password123')
+            db.session.add(user)
+            db.session.commit()
+            
+            # Add default settings
+            settings = Settings(
+                user_id=user.id,
+                email_notifications=True,
+                study_reminders=True,
+                weekly_summary=True,
+                goal_alerts=True,
+                theme='light',
+                language='en-US',
+                timezone='Mountain Time (MT)'
+            )
+            db.session.add(settings)
+            
+            # Add mock events for May 2024
+            mock_events = [
+                Event(user_id=user.id, title='Algorithmic Study', description='Focusing on sorting and graph search algorithms.', start_time=datetime(2024, 5, 10, 10, 0), end_time=datetime(2024, 5, 10, 12, 0), category='Study Sessions', all_day=False),
+                Event(user_id=user.id, title='Data Structures', description='Reviewing Trees, Heaps, and Tries.', start_time=datetime(2024, 5, 15, 13, 0), end_time=datetime(2024, 5, 15, 15, 0), category='Study Sessions', all_day=False),
+                Event(user_id=user.id, title='Library Return', description='Return textbook: Introduction to Algorithms.', start_time=datetime(2024, 5, 15, 17, 0), end_time=datetime(2024, 5, 15, 17, 30), category='Reminders', all_day=False),
+                Event(user_id=user.id, title='Biology Revision', description='Study session on Genetics and DNA replication.', start_time=datetime(2024, 5, 18, 10, 0), end_time=datetime(2024, 5, 18, 12, 0), category='Study Sessions', all_day=False),
+                Event(user_id=user.id, title='Biology Lab', description='Genetics lab assignment submission.', start_time=datetime(2024, 5, 18, 14, 0), end_time=datetime(2024, 5, 18, 16, 0), category='Study Sessions', all_day=False),
+                Event(user_id=user.id, title='Database Assignment', description='SQL query optimization homework submission.', start_time=datetime(2024, 5, 20, 23, 59), end_time=datetime(2024, 5, 20, 23, 59), category='Deadlines', all_day=True),
+                Event(user_id=user.id, title='DB Project', description='Database design phase 2 documentation.', start_time=datetime(2024, 5, 20, 15, 0), end_time=datetime(2024, 5, 20, 17, 0), category='Deadlines', all_day=False),
+                Event(user_id=user.id, title='English Presentation', description='Prepare and deliver presentation on Tech & Society.', start_time=datetime(2024, 5, 22, 14, 30), end_time=datetime(2024, 5, 22, 16, 0), category='Study Sessions', all_day=False),
+                Event(user_id=user.id, title='Midterm Exam', description='Computer Systems midterm examination.', start_time=datetime(2024, 5, 25, 9, 0), end_time=datetime(2024, 5, 25, 11, 30), category='Exams', all_day=False),
+                Event(user_id=user.id, title='Final Calculus', description='Calculus III exam prep and test.', start_time=datetime(2024, 5, 25, 13, 0), end_time=datetime(2024, 5, 25, 15, 0), category='Exams', all_day=False),
+            ]
+            db.session.bulk_save_objects(mock_events)
+            db.session.commit()
 
-        # Add mock academic goals
-        mock_goals = [
-            Goal(user_id=user.id, title='Achieve GPA >= 3.8', category='Academic', description='Maintain a strong GPA throughout the semester.', progress=85, status='In Progress'),
-            Goal(user_id=user.id, title='Complete Operating Systems Project', category='Academic', description='Finish the semester-long OS project with the team.', progress=50, status='In Progress'),
-        ]
-        db.session.bulk_save_objects(mock_goals)
-        db.session.commit()
+            # Add mock academic goals
+            mock_goals = [
+                Goal(user_id=user.id, title='Achieve GPA >= 3.8', category='Academic', description='Maintain a strong GPA throughout the semester.', progress=85, status='In Progress'),
+                Goal(user_id=user.id, title='Complete Operating Systems Project', category='Academic', description='Finish the semester-long OS project with the team.', progress=50, status='In Progress'),
+            ]
+            db.session.bulk_save_objects(mock_goals)
+            db.session.commit()
+        db.session.remove()
+
+
+if not app.config['IS_VERCEL'] or os.environ.get('INIT_DB_ON_STARTUP') == '1':
+    initialize_database()
 
 # --- Auth Routes ---
 @app.route('/login', methods=['GET', 'POST'])

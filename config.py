@@ -1,5 +1,6 @@
 import os
 from dotenv import load_dotenv
+from sqlalchemy.pool import NullPool
 
 load_dotenv()
 
@@ -18,6 +19,12 @@ class Config:
         'pool_pre_ping': True,   # cek koneksi masih hidup sebelum dipakai (penting untuk DB online)
         'pool_recycle': 280,     # daur ulang koneksi tiap ~280 detik, hindari "MySQL server has gone away"
     }
+
+    if IS_VERCEL:
+        SQLALCHEMY_ENGINE_OPTIONS = {
+            'poolclass': NullPool,
+            'pool_pre_ping': True,
+        }
 
     # Upload configurations
     UPLOAD_FOLDER = os.environ.get('UPLOAD_FOLDER') or (
